@@ -62,7 +62,7 @@ const Stake: NextPage = () => {
   }
 
   if (isLoading) {
-    return <div>Loading</div>;
+    return <div>Loading</div>; 
   }
 
   return (
@@ -79,18 +79,19 @@ const Stake: NextPage = () => {
             <div className={styles.tokenItem}>
               <h3 className={styles.tokenLabel}>Claimable Rewards</h3>
               <p className={styles.tokenValue}>
-                <b>
-                  {!claimableRewards
-                    ? "Loading..."
-                    : ethers.utils.formatUnits(claimableRewards, 18)}
-                </b>{""}
+              <b>
+  {!claimableRewards
+    ? "Loading..."
+    : Number(ethers.utils.formatUnits(claimableRewards, 18))}
+</b>{""}
+
                 {tokenBalance?.symbol}
               </p>
             </div>
             <div className={styles.tokenItem}>
               <h3 className={styles.tokenLabel}>Current Balance</h3>
               <p className={styles.tokenValue}>
-                <b>{tokenBalance?.displayValue}</b> {tokenBalance?.symbol}11
+                <b>{tokenBalance?.displayValue}</b> {tokenBalance?.symbol} 
               </p>
             </div>
           </div>
