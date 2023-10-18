@@ -1,4 +1,5 @@
 .container {
+  background-color: #12163E; /* Add this line to set the background color */
   margin-top: 96px;
   display: flex;
   flex-direction: column;
@@ -7,10 +8,12 @@
   width: 100%;
   position: absolute;
   padding: 0 24px;
+  
 }
 
 .h1 {
-  margin-bottom: 0px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .explain {
@@ -20,13 +23,13 @@
 
 .divider {
   width: 50%;
-  border-color: grey;
+  border-color: rgb(255, 233, 108);
   opacity: 0.25;
 }
 
 .smallDivider {
   width: 25%;
-  border-color: grey;
+  border-color: rgb(255, 233, 40);
   margin-top: 64px;
   opacity: 0.25;
 }
@@ -45,7 +48,7 @@
 
 .nftBox {
   border-radius: 16px;
-  border: 1px solid #ccc;
+  border: 1px solid #ffffff;
   width: 19%;
   min-height: 200px;
   padding: 16px;
@@ -73,7 +76,7 @@
 }
 
 .selectBoxDescription {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(248, 248, 248, 0.9);
   margin-top: 0px;
 }
 
@@ -90,6 +93,9 @@
 @media only screen and (max-width: 800px) {
   .nftBoxGrid {
     justify-content: center;
+    overflow-y: auto;
+  max-height: 80vh; /* you can set this to your desired value */
+}
   }
   .nftBox {
     width: 90%;
@@ -99,7 +105,7 @@
     width: 90%;
     margin-top: 16px;
   }
-}
+
 
 .tokenGrid {
   display: flex;
@@ -121,7 +127,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 239, 90, 0.877);
   gap: 16px;
 }
 
@@ -129,7 +135,7 @@
   margin-top: 0px;
   margin-bottom: 0px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 252, 96, 0.959);
 }
 
 /* Second tokenLabel item */
@@ -178,19 +184,39 @@
   max-height: 300px;
   border-radius: 15px;
 }
-.timerHeading{
-  font-size: large;
-  font-weight: 800;
 
+.walletButtonContainer {
+  position: absolute;
+  top: -50px;
+  right: 20px;
+  z-index: 1000;
+}
+.container {
+  /* ... */
 }
 
-.timer{
-  font-size:x-large;
-  font-weight: 600;
+.h1 {
+  /* ... */
 }
+
+/* ... (All other existing styles here) */
+
+.nftBox {
+  border-radius: 16px;
+  border: 1px solid #ffd518;
+  width: 30%;
+  min-height: 200px;
+  padding: 16px;
+  overflow: auto; /* New line */
+  justify-content: center;  /* Center items horizontally */
+  display: list-item;  /* Flexbox container */
+}
+
 .nftMedia {
-  max-width: 100%; /* Limit the maximum width */
-  max-height: 200px; /* Limit the maximum height */
-  display: block; /* Ensure it behaves as a block element */
-  margin: 0 auto; /* Center the media horizontally */
+  width: 100%;
+  max-height: 200px;
+  object-fit: scale-down; /* or object-fit: contain; */
+  border-radius: 15px;
 }
+
+/* ... (Any other styles you have) */
