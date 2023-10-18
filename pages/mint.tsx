@@ -1,7 +1,7 @@
 import { Web3Button } from "@thirdweb-dev/react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { nftDropContractAddress } from "../consts/contractAddresses";
+import { editionDropContractAddress } from "../consts/contractAddresses";
 import styles from "../styles/Home.module.css";
 
 const Mint: NextPage = () => {
@@ -12,15 +12,14 @@ const Mint: NextPage = () => {
       <h1 className={styles.h1}>Mint An NFT!</h1>
 
       <p className={styles.explain}>
-        Here is where we use our <b>NFT Drop</b> contract to allow users to mint
-        one of the NFTs that we lazy minted.
+        Here is where we use our <b>Edition Drop</b> contract to allow users to
+        mint one of the NFTs that we lazy minted.
       </p>
       <hr className={`${styles.smallDivider} ${styles.detailPageHr}`} />
 
       <Web3Button
-        theme="dark"
-        contractAddress={nftDropContractAddress}
-        action={(contract) => contract.erc721.claim(1)}
+        contractAddress={editionDropContractAddress}
+        action={(contract) => contract.erc1155.claim(0, 1)}
         onSuccess={() => {
           alert("NFT Claimed!");
           router.push("/stake");

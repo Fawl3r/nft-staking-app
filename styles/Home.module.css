@@ -178,10 +178,13 @@
   max-height: 300px;
   border-radius: 15px;
 }
-/* Add this class to your CSS stylesheet */
-.nftMedia {
-  max-width: 100%; /* Limit the maximum width */
-  max-height: 200px; /* Limit the maximum height */
-  display: block; /* Ensure it behaves as a block element */
-  margin: 0 auto; /* Center the media horizontally */
+.timerHeading{
+  font-size: large;
+  font-weight: 800;
+
+}
+
+.timer{
+  font-size:x-large;
+  font-weight: 600;
 }
