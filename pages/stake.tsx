@@ -61,10 +61,12 @@ const Stake: NextPage = () => {
     const rewardsPerHour = BigNumber.from(50);
     const lockHours = BigNumber.from(lockdays * 24);
     const hoursElapsed = rewardsPerHour.mul(lockHours).sub(rewards).div(rewardsPerHour);
-    const daysRemaining = hoursElapsed.div(24).toNumber();
-    const hoursRemaining = hoursElapsed.mod(24).toNumber();
-    const minutesRemaining = hoursElapsed.sub(hoursElapsed.floor()).mul(60).toNumber();
-
+    const hoursElapsedNumber = parseFloat(ethers.utils.formatUnits(hoursElapsed, 0));
+  
+    const daysRemaining = Math.floor(hoursElapsedNumber / 24);
+    const hoursRemaining = Math.floor(hoursElapsedNumber % 24);
+    const minutesRemaining = Math.floor((hoursElapsedNumber - Math.floor(hoursElapsedNumber)) * 60);
+  
     if (daysRemaining > 0) {
       return `${daysRemaining} D ${hoursRemaining} H ${minutesRemaining} M`;
     } else if (hoursRemaining > 0) {
