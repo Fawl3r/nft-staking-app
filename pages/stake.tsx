@@ -36,7 +36,7 @@ const Stake: NextPage = () => {
   const { data: ownedNfts } = useOwnedNFTs(nftDropContract, address);
   const { data: tokenBalance } = useTokenBalance(tokenContract, address);
   const [claimableRewards, setClaimableRewards] = useState<BigNumber>();
-  const [rewards, setRewards] = useState<number>();
+  const [rewards, setRewards] = useState<BigNumber>();
   const { data: stakedTokens } = useContractRead(contract, "getStakeInfo", [
     address,
   ]);
@@ -47,7 +47,7 @@ const Stake: NextPage = () => {
     async function loadClaimableRewards() {
       const stakeInfo = await contract?.call("getStakeInfo", [address]);
       setClaimableRewards(stakeInfo[1]);
-      setRewards(stakeInfo[1].toNumber());
+      setRewards(stakeInfo[1]);
     }
     loadClaimableRewards();
     const interval = setInterval(loadClaimableRewards, 10000);
@@ -56,16 +56,14 @@ const Stake: NextPage = () => {
       clearInterval(interval);
     };
   }, [address, contract]);
-  function formatTimer(rewards) {
-    const rewardsPerHour = 50;
-    const lockHours = lockdays * 24;
-    const hoursElapsed =
-      (lockHours * rewardsPerHour - rewards) / rewardsPerHour;
-    const daysRemaining = Math.floor(hoursElapsed / 24);
-    const hoursRemaining = Math.floor(hoursElapsed % 24);
-    const minutesRemaining = Math.floor(
-      (hoursElapsed - Math.floor(hoursElapsed)) * 60
-    );
+
+  function formatTimer(rewards: BigNumber) {
+    const rewardsPerHour = BigNumber.from(50);
+    const lockHours = BigNumber.from(lockdays * 24);
+    const hoursElapsed = rewardsPerHour.mul(lockHours).sub(rewards).div(rewardsPerHour);
+    const daysRemaining = hoursElapsed.div(24).toNumber();
+    const hoursRemaining = hoursElapsed.mod(24).toNumber();
+    const minutesRemaining = hoursElapsed.sub(hoursElapsed.floor()).mul(60).toNumber();
 
     if (daysRemaining > 0) {
       return `${daysRemaining} D ${hoursRemaining} H ${minutesRemaining} M`;
@@ -105,26 +103,27 @@ const Stake: NextPage = () => {
           <h2>Your Tokens</h2>
           <div className={styles.tokenGrid}>
             <div className={styles.tokenItem}>
-              <h3 className={styles.tokenLabel}>Claimable Rewards</h3>
+              <h3 className={styles.tokenLabel}>Claimable Rewards (in F3)</h3>
               <p className={styles.tokenValue}>
                 <b>
                   {!claimableRewards
                     ? "Loading..."
-                    : claimableRewards.toNumber()}
-                </b>{" "}
-                {tokenBalance?.symbol}
+                    : ethers.utils.formatEther(claimableRewards).substring(0, 1)}{" "}
+                  F3
+                </b>
               </p>
             </div>
             <div className={styles.tokenItem}>
               <h3 className={styles.tokenLabel}>Current Balance</h3>
               <p className={styles.tokenValue}>
-                <b>{tokenBalance?.displayValue}</b> {tokenBalance?.symbol}
+                <b>{parseFloat(tokenBalance?.displayValue).toFixed(0)}</b>{" "}
+                {tokenBalance?.symbol}
               </p>
             </div>
           </div>
           {claimableRewards &&
           rewards &&
-          claimableRewards.toNumber() >= lockamount ? (
+          claimableRewards.gte(BigNumber.from(lockamount)) ? (
             <Web3Button
               action={(contract) => contract.call("claimRewards")}
               contractAddress={stakingContractAddress}
@@ -132,10 +131,10 @@ const Stake: NextPage = () => {
               Claim Rewards
             </Web3Button>
           ) : (
-            rewards != 0 && (
+            rewards && rewards.gt(BigNumber.from(0)) && (
               <div>
                 <p className={styles.timerHeading}>
-                  You can claim yours rewards in:{" "}
+                  You can claim your rewards in:{" "}
                 </p>
                 <p className={styles.timer}>{formatTimer(rewards)}</p>
               </div>
@@ -179,6 +178,3 @@ const Stake: NextPage = () => {
 };
 
 export default Stake;
-
-// lockdays: 7
-//
